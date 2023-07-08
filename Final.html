@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html>
+
+ <head>
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,700i|Open+Sans:400,400i,700"
+        rel="stylesheet">
+    <link rel="stylesheet" href="project2_G2.css">
+ </head>
+
+ <canvas id="canvas"></canvas>
+
+ <script>
+    // Setting up the status of the arrow keys
+    var keys = {
+        right: false,
+        left: false,
+        up: false,
+        disabled: true,
+        on: false
+        };
+
+    // Render the titlescreen
+    function renderTitle(){
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, 1272, 589);
+        keys.disabled = false;
+    }
+
+    // This function is called if a key on the keyboard is pressed
+    function keyDown(e) {
+        if(e.keyCode == 13){
+                window.location.href = "index.html";
+        }
+        if(keys.disabled == true) {
+            if(e.keyCode == 37) {
+                keys.left = true;
+            }
+            if(e.keyCode == 38) {
+                if(player.jump == false) {
+                    player.y_v = -10;
+                }
+            }
+            if(e.keyCode == 39) {
+                keys.right = true;
+            }
+            if(e.keyCode == 32) {
+                if(!keys.on) {
+                    document.addEventListener("VoiceControl", handleAction);
+                    keys.on == true;
+                }
+            }
+        }
+
+    }
+    // This function is called when the pressed key is released 
+    function keyUp(e) {
+        if (keys.disabled == false) {
+            if(e.keyCode == 13) {
+                keys.disabled = true;
+            }
+        }
+        if (keys.disabled == true) {
+            if(e.keyCode == 37) {
+                keys.left = false;
+            }
+            if(e.keyCode == 38) {
+                if(player.y_v < -2) {
+                player.y_v = -3;
+                }
+            }
+            if(e.keyCode == 39) {
+                keys.right = false;
+            }
+            if(e.keyCode == 32) {
+                keys.right = true;
+            }
+        }
+    } 
+    function createGame() {
+    renderTitle();
+    ctx.font = "100px Comic Sans MS";
+    ctx.fillStyle = "Purple";
+    ctx.textAlign = "center";
+    ctx.fillText("Congratulations!", canvas.width/2, canvas.height/2);
+    ctx.font = "30px Comic Sans MS";
+    ctx.fillText("To Replay Press Enter", canvas.width/2, canvas.height/2 + 50);
+    document.removeEventListener("keydown",keyDown);
+    document.removeEventListener("keyup",keyUp);
+    }
+    
+    var canvas = document.getElementById("canvas");
+    var style = canvas.style;
+    style.marginLeft = "auto";
+    style.marginRight = "auto";
+    var parentStyle = canvas.parentElement.style;
+    parentStyle.textAlign = "center";
+    parentStyle.width = "100%";
+    ctx=canvas.getContext("2d");
+    ctx.canvas.height = 589;
+    ctx.canvas.width = 1272;
+
+    createGame();
+    document.addEventListener("keydown",keyDown);
+    document.addEventListener("keyup",keyUp);
+    // setInterval(loop,22);
+ </script>
+</html>
